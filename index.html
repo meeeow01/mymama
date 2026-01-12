@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MAMA 💖</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", "Poppins", system-ui, sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top, #8e24aa, #2b003d);
+  overflow: hidden;
+}
+
+/* HEART */
+.heart {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: hotpink;
+  transform: rotate(-45deg);
+  animation: beat 1.2s infinite;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: hotpink;
+  border-radius: 50%;
+}
+
+.heart::before {
+  top: -90px;
+  left: 0;
+}
+
+.heart::after {
+  left: 90px;
+  top: 0;
+}
+
+@keyframes beat {
+  0%,100% { transform: rotate(-45deg) scale(1); }
+  50% { transform: rotate(-45deg) scale(1.15); }
+}
+
+/* SHAKE */
+.shake {
+  animation: shake 0.25s infinite;
+}
+
+@keyframes shake {
+  0% { transform: rotate(-45deg) translate(0); }
+  25% { transform: rotate(-45deg) translate(4px,-4px); }
+  50% { transform: rotate(-45deg) translate(-4px,4px); }
+  75% { transform: rotate(-45deg) translate(4px,4px); }
+  100% { transform: rotate(-45deg) translate(0); }
+}
+
+/* BURST */
+.burst {
+  animation: explode 0.5s forwards ease-out;
+}
+
+@keyframes explode {
+  to {
+    transform: rotate(-45deg) scale(4);
+    opacity: 0;
+  }
+}
+
+/* SHOCKWAVE */
+.wave {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255,105,180,0.8);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.wave.show {
+  animation: wave 0.9s ease-out forwards;
+}
+
+@keyframes wave {
+  from { transform: scale(1); opacity: 1; }
+  to { transform: scale(15); opacity: 0; }
+}
+
+/* FRAGMENTS */
+.fragment {
+  position: absolute;
+  background: linear-gradient(145deg, #ff69b4, #ff1493);
+  border-radius: 4px;
+  animation: fragmentMove 3s forwards cubic-bezier(.2,.8,.4,1);
+}
+
+@keyframes fragmentMove {
+  0% { transform: translate(0,0) rotate(0deg); opacity: 1; }
+  20% { transform: translate(var(--x), var(--up)) rotate(180deg); }
+  60% { transform: translate(calc(var(--x) * 1.2), 380px) rotate(540deg); }
+  100% { transform: translate(calc(var(--x) * 1.3), 520px) rotate(900deg); opacity: 0; }
+}
+
+/* ✅ CLEAN & PROPER TEXT */
+.mama {
+  position: absolute;
+  text-align: center;
+  font-size: 120px;
+  font-weight: 900;
+  letter-spacing: 8px;
+  line-height: 1.1;
+  color: #ff69b4;
+
+  text-shadow:
+    0 0 10px #ff69b4,
+    0 0 25px #ff1493,
+    0 0 60px rgba(255,20,147,0.8);
+
+  opacity: 0;
+  transform: scale(0.6);
+  transition: all 0.9s ease;
+}
+
+.mama.show {
+  opacity: 1;
+  transform: scale(1);
+}
+</style>
+</head>
+
+<body>
+
+<div class="heart" id="heart"></div>
+<div class="wave" id="wave"></div>
+<div class="mama" id="mama">MAMA 💖</div>
+
+<script>
+const heart = document.getElementById("heart");
+const mama = document.getElementById("mama");
+const wave = document.getElementById("wave");
+
+function createFragments() {
+  for (let i = 0; i < 32; i++) {
+    const f = document.createElement("div");
+    f.className = "fragment";
+
+    const size = Math.random() * 10 + 8;
+    f.style.width = size + "px";
+    f.style.height = size + "px";
+
+    f.style.left = "50%";
+    f.style.top = "50%";
+    f.style.setProperty("--x", (Math.random() * 500 - 250) + "px");
+    f.style.setProperty("--up", -(Math.random() * 200 + 80) + "px");
+
+    document.body.appendChild(f);
+    setTimeout(() => f.remove(), 3000);
+  }
+}
+
+setTimeout(() => heart.classList.add("shake"), 1800);
+
+setTimeout(() => {
+  heart.classList.remove("shake");
+  heart.classList.add("burst");
+  wave.classList.add("show");
+  createFragments();
+}, 2400);
+
+setTimeout(() => {
+  heart.style.display = "none";
+  mama.classList.add("show");
+}, 3300);
+</script>
+
+</body>
+</html>
